@@ -1,0 +1,23 @@
+{
+  "name": "piyush-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website for Piyush Osti | AWS Cloud Engineer",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=5500",
+    "debug": "npx live-server --port=5500 & sleep 3 && npx chrome-cli open 'http://localhost:5500'",
+    "mobile": "npx live-server --port=5500 & sleep 3 && start chrome --window-size=400,800 --app='http://localhost:5500'"
+  },
+  "keywords": [
+    "portfolio",
+    "cloud",
+    "aws",
+    "devops",
+    "frontend"
+  ],
+  "author": "Piyush Osti",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
