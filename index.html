@@ -274,27 +274,52 @@ I design, build, and optimize scalable cloud solutions on AWS to help businesses
 
     <div class="contact-content">
       <!-- Contact Form -->
-      <form class="contact-form animate-fade-in-up"
-            action="https://formspree.io/f/xjkakovy"
-            method="POST">
-        
+      <form id="contact-form" class="contact-form animate-fade-in-up" action="https://formspree.io/f/xjkakovy" method="POST">
         <div class="form-group">
           <input type="text" id="name" name="name" placeholder="Your Name" required class="form-input">
         </div>
-        
         <div class="form-group">
           <input type="email" id="email" name="email" placeholder="Your Email" required class="form-input">
         </div>
-        
         <div class="form-group">
           <textarea id="message" name="message" rows="5" placeholder="Your Message" required class="form-textarea"></textarea>
         </div>
-        
         <button type="submit" class="btn btn-primary btn-full">Send Message</button>
       </form>
+
+      <!-- Success / Error messages -->
+      <div id="form-success" style="display:none; color:green; margin-top:10px;">✅ Message sent successfully!</div>
+      <div id="form-error" style="display:none; color:red; margin-top:10px;">⚠️ Something went wrong. Try again.</div>
     </div>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault(); // prevent normal form submission
+    const data = new FormData(form);
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      if (response.ok) {
+        form.reset();
+        document.getElementById('form-success').style.display = 'block';
+        document.getElementById('form-error').style.display = 'none';
+      } else {
+        throw new Error('Network error');
+      }
+    } catch (error) {
+      document.getElementById('form-error').style.display = 'block';
+      document.getElementById('form-success').style.display = 'none';
+    }
+  });
+</script>
 
 
   <!-- Footer -->
