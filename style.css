@@ -232,7 +232,6 @@ body {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  text-align: justify;
 }
 
 /* .hero-buttons {
@@ -359,6 +358,7 @@ section {
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
+  text-align: justify;
 }
 
 .about-card {
@@ -373,7 +373,6 @@ section {
   font-size: 1.125rem;
   line-height: 1.8;
   color: var(--card-foreground);
-  text-align: justify;
 }
 
 /* Projects Section */
