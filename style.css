@@ -206,8 +206,8 @@ body {
 /*New code */
 .hero-img
 {
-  width: 8rem;
-  height: 8rem;
+  width: 8 rem;
+  height: 8 rem;
   border-radius: 50%;
    border: 3px solid var(--color-primary, #1a73e8); 
    box-shadow: 0 0 0 3px #ffffff, 
