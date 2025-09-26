@@ -373,6 +373,7 @@ section {
   font-size: 1.125rem;
   line-height: 1.8;
   color: var(--card-foreground);
+  text-align: justify;
 }
 
 /* Projects Section */
