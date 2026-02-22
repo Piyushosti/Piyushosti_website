@@ -84,75 +84,6 @@ cd piyushosti-website
 npm install
 ```
 
-### 3. Set up environment variables
-
-Create a `.env.local` file in the root of the project:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-NEXT_PUBLIC_ADMIN_USERNAME=your_admin_username
-NEXT_PUBLIC_ADMIN_PASSWORD=your_admin_password
-```
-
-> Get your Supabase URL and anon key from: **Supabase Dashboard → Project Settings → API**
-
-### 4. Set up Supabase database
-
-Run the following SQL in **Supabase Dashboard → SQL Editor**:
-
-```sql
--- Contacts table
-CREATE TABLE IF NOT EXISTS contacts (
-  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  message TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public insert" ON contacts FOR INSERT TO anon WITH CHECK (true);
-CREATE POLICY "Service read contacts" ON contacts FOR SELECT USING (true);
-
--- Blogs table
-CREATE TABLE IF NOT EXISTS blogs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  content TEXT NOT NULL,
-  excerpt TEXT,
-  tags TEXT[] DEFAULT '{}',
-  published BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-ALTER TABLE blogs ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public read published blogs" ON blogs FOR SELECT TO anon USING (published = true);
-CREATE POLICY "Service manage blogs" ON blogs FOR ALL USING (true);
-
--- Visitor counter table
-CREATE TABLE IF NOT EXISTS visitors (
-  id INTEGER PRIMARY KEY DEFAULT 1,
-  count BIGINT DEFAULT 0,
-  last_updated TIMESTAMPTZ DEFAULT NOW()
-);
-INSERT INTO visitors (id, count) VALUES (1, 0) ON CONFLICT (id) DO NOTHING;
-ALTER TABLE visitors ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public read visitors" ON visitors FOR SELECT USING (true);
-CREATE POLICY "Service update visitors" ON visitors FOR UPDATE USING (true);
-
--- Visitor increment function
-CREATE OR REPLACE FUNCTION increment_visitor_count()
-RETURNS BIGINT LANGUAGE plpgsql SECURITY DEFINER AS $$
-DECLARE new_count BIGINT;
-BEGIN
-  UPDATE visitors SET count = count + 1, last_updated = NOW()
-  WHERE id = 1 RETURNING count INTO new_count;
-  RETURN new_count;
-END;
-$$;
-GRANT EXECUTE ON FUNCTION increment_visitor_count() TO anon;
-```
 
 ### 5. Run the development server
 
@@ -164,40 +95,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🔐 Admin Dashboard
-
-Access the admin panel at `/admin`.
-
-**Features:**
-- 📊 Overview — visitor count, total messages, published blogs
-- 📬 Messages — view and delete contact form submissions
-- 📝 Blogs — manage all blog posts (publish/unpublish/edit/delete)
-- ➕ New Blog — write and publish blog posts with title, slug, excerpt, tags, and HTML content
-
----
-
-## 📝 Writing Blog Posts
-
-1. Go to `yoursite.com/admin`
-2. Login with your admin username and password
-3. Click **➕ New Blog** tab
-4. Fill in: Title, Slug, Excerpt, Tags, Content (HTML supported)
-5. Check **Publish immediately** and click **🚀 Publish Post**
-
-Your post will appear live at `yoursite.com/blog` instantly.
-
----
-
-## 🚀 Deployment
-
-### Deploy to Vercel
-
-```bash
-npm install -g vercel
-vercel
-```
-
-Add all environment variables in **Vercel Dashboard → Project → Settings → Environment Variables**.
 
 ---
 
