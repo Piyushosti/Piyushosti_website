@@ -57,7 +57,7 @@ export default function Hero() {
             View My Projects
           </a>
           <a
-            href="https://linkedin.com/in/piyush-osti"
+            href="https://www.linkedin.com/in/piyush-osti-5339a9242"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-secondary"
