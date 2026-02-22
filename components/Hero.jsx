@@ -22,6 +22,7 @@
 //     </header>
 //   );
 // }
+import VisitorCounter from "./VisitorCounter";
 
 export default function Hero() {
   return (
@@ -64,7 +65,7 @@ export default function Hero() {
             LinkedIn Profile
           </a>
         </div>
-
+        {/* Visitor Counter */}
       </div>
     </header>
   );
