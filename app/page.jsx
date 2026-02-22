@@ -18,7 +18,7 @@ export default function Page() {
       <section id="projects" className="projects">
         <div className="container">
           <div className="section-header animate-fade-in-up">
-            <h2 className="section-heading">Featured Projectssssssssssss</h2>
+            <h2 className="section-heading">Featured Projects</h2>
             <p className="section-subheading">
               Real-world AWS cloud solutions I've designed and implemented
             </p>
