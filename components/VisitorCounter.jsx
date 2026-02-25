@@ -11,56 +11,43 @@ export default function VisitorCounter() {
   const [count, setCount] = useState(null);
 
   useEffect(() => {
-    async function updateCounter() {
-      const hasVisited = sessionStorage.getItem("page_visited");
+    async function track() {
+      // 1. CLEAR SESSION CHECK FOR TESTING: 
+      // If you want to see it increment every refresh while testing, 
+      // comment out the 'if (!hasVisited)' logic below.
+      const hasVisited = sessionStorage.getItem("done_deal");
 
       if (!hasVisited) {
-        // Try to increment
+        console.log("Automatically triggering increment...");
         const { data, error } = await supabase.rpc("increment_visitor_count");
         
         if (error) {
-          console.error("Increment Error:", error.message);
-          // Fallback: just get the current number
-          fetchCurrent();
+          console.error("RPC failed automatically:", error.message);
+          fetchOnly();
         } else {
+          console.log("Automatic increment success! New count:", data);
           setCount(data);
-          sessionStorage.setItem("page_visited", "true");
+          sessionStorage.setItem("done_deal", "true");
         }
       } else {
-        fetchCurrent();
+        console.log("User already counted this session. Fetching current total.");
+        fetchOnly();
       }
     }
 
-    async function fetchCurrent() {
-      const { data, error } = await supabase
-        .from("visitors")
-        .select("count")
-        .eq("id", 1)
-        .single();
-      
-      if (!error && data) setCount(data.count);
+    async function fetchOnly() {
+      const { data } = await supabase.from("visitors").select("count").eq("id", 1).single();
+      if (data) setCount(data.count);
     }
 
-    updateCounter();
+    track();
   }, []);
 
   if (count === null) return null;
 
   return (
-    <div style={{
-      display: "inline-flex",
-      alignItems: "center",
-      gap: "8px",
-      padding: "6px 14px",
-      borderRadius: "100px",
-      background: "rgba(255,255,255,0.05)",
-      border: "1px solid rgba(255,255,255,0.1)",
-      color: "#9ca3af",
-      fontSize: "13px"
-    }}>
-      <span style={{ color: "#10b981", fontSize: "10px" }}>●</span>
-      {Number(count).toLocaleString()} views
+    <div style={{ padding: "10px", color: "#aaa", fontSize: "14px" }}>
+      👁️ {Number(count).toLocaleString()} views
     </div>
   );
 }
-
