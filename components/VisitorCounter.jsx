@@ -11,66 +11,56 @@ export default function VisitorCounter() {
   const [count, setCount] = useState(null);
 
   useEffect(() => {
-    const trackVisit = async () => {
-      // 1. Check if we already counted this user in this session
-      const hasVisited = sessionStorage.getItem("has_counted_visit");
+    async function updateCounter() {
+      const hasVisited = sessionStorage.getItem("page_visited");
 
       if (!hasVisited) {
-        console.log("VisitorCounter: New session detected. Incrementing...");
-        
-        // 2. Call the SQL Function
+        // Try to increment
         const { data, error } = await supabase.rpc("increment_visitor_count");
-
+        
         if (error) {
-          console.error("VisitorCounter Error (RPC):", error.message);
-          // If RPC fails, try to just fetch the current number
-          fetchCurrentOnly();
+          console.error("Increment Error:", error.message);
+          // Fallback: just get the current number
+          fetchCurrent();
         } else {
-          console.log("VisitorCounter: Success! New count is:", data);
           setCount(data);
-          sessionStorage.setItem("has_counted_visit", "true");
+          sessionStorage.setItem("page_visited", "true");
         }
       } else {
-        console.log("VisitorCounter: Session exists. Fetching current count only.");
-        fetchCurrentOnly();
+        fetchCurrent();
       }
-    };
+    }
 
-    const fetchCurrentOnly = async () => {
+    async function fetchCurrent() {
       const { data, error } = await supabase
         .from("visitors")
         .select("count")
         .eq("id", 1)
         .single();
       
-      if (error) {
-        console.error("VisitorCounter Error (Fetch):", error.message);
-      } else if (data) {
-        setCount(data.count);
-      }
-    };
+      if (!error && data) setCount(data.count);
+    }
 
-    trackVisit();
+    updateCounter();
   }, []);
 
   if (count === null) return null;
 
   return (
-    <div
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "0.5rem",
-        background: "rgba(255, 255, 255, 0.05)",
-        border: "1px solid rgba(255, 255, 255, 0.1)",
-        borderRadius: "20px",
-        padding: "0.4rem 1rem",
-        fontSize: "0.8rem",
-        color: "rgba(255, 255, 255, 0.7)",
-      }}
-    >
-      <span style={{ color: "#10b981" }}>●</span>
-      <span>{Number(count).toLocaleString()} views</span>
+    <div style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "8px",
+      padding: "6px 14px",
+      borderRadius: "100px",
+      background: "rgba(255,255,255,0.05)",
+      border: "1px solid rgba(255,255,255,0.1)",
+      color: "#9ca3af",
+      fontSize: "13px"
+    }}>
+      <span style={{ color: "#10b981", fontSize: "10px" }}>●</span>
+      {Number(count).toLocaleString()} views
     </div>
   );
 }
+
