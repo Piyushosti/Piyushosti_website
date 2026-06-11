@@ -31,7 +31,7 @@ export default function Hero() {
         {/* CTA Buttons */}
         <div className="hero-buttons">
           <a href="#projects" className="btn btn-primary">
-            View My Projects
+            View My Projectss
           </a>
           <a
             href="https://www.linkedin.com/in/piyush-osti-5339a9242"
