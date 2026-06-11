@@ -115,7 +115,7 @@ export default function Certifications() {
           {/* Credly Badge */}
           <div
             style={{
-              background: "#f8f9fb",
+              background: "var(--color-bg-alt)",
               border: "1px solid var(--color-border)",
               borderRadius: "var(--radius)",
               padding: "0.75rem",

@@ -71,9 +71,25 @@ export default function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState("light");
 
   // Close menu on route change
   useEffect(() => { setMenuOpen(false); }, [pathname]);
+
+  // Handle theme initialization and preference
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || 
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+  };
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -122,48 +138,71 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Hamburger button — mobile only */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-            style={{
-              display: "none",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "5px",
-              width: "40px",
-              height: "40px",
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              padding: "4px",
-              zIndex: 1100,
-            }}
-            className="hamburger-btn"
-          >
-            {/* Three lines → X animation */}
-            <span style={{
-              display: "block", width: "24px", height: "2px",
-              background: menuOpen ? "var(--color-primary)" : "var(--color-text)",
-              borderRadius: "2px",
-              transition: "all 0.3s",
-              transform: menuOpen ? "translateY(7px) rotate(45deg)" : "none",
-            }} />
-            <span style={{
-              display: "block", width: "24px", height: "2px",
-              background: menuOpen ? "transparent" : "var(--color-text)",
-              borderRadius: "2px",
-              transition: "all 0.3s",
-            }} />
-            <span style={{
-              display: "block", width: "24px", height: "2px",
-              background: menuOpen ? "var(--color-primary)" : "var(--color-text)",
-              borderRadius: "2px",
-              transition: "all 0.3s",
-              transform: menuOpen ? "translateY(-7px) rotate(-45deg)" : "none",
-            }} />
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+              className="theme-toggle"
+              style={{
+                background: "transparent",
+                border: "none",
+                fontSize: "1.25rem",
+                cursor: "pointer",
+                padding: "0.5rem",
+                display: "flex",
+                alignItems: "center",
+                color: "var(--color-text)",
+                transition: "transform 0.2s"
+              }}
+              onMouseEnter={(e) => e.target.style.transform = "scale(1.1)"}
+              onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
+            >
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
+
+            {/* Hamburger button — mobile only */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+              style={{
+                display: "none",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "5px",
+                width: "40px",
+                height: "40px",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                padding: "4px",
+                zIndex: 1100,
+              }}
+              className="hamburger-btn"
+            >
+              <span style={{
+                display: "block", width: "24px", height: "2px",
+                background: menuOpen ? "var(--color-primary)" : "var(--color-text)",
+                borderRadius: "2px",
+                transition: "all 0.3s",
+                transform: menuOpen ? "translateY(7px) rotate(45deg)" : "none",
+              }} />
+              <span style={{
+                display: "block", width: "24px", height: "2px",
+                background: menuOpen ? "transparent" : "var(--color-text)",
+                borderRadius: "2px",
+                transition: "all 0.3s",
+              }} />
+              <span style={{
+                display: "block", width: "24px", height: "2px",
+                background: menuOpen ? "var(--color-primary)" : "var(--color-text)",
+                borderRadius: "2px",
+                transition: "all 0.3s",
+                transform: menuOpen ? "translateY(-7px) rotate(-45deg)" : "none",
+              }} />
+            </button>
+          </div>
 
         </div>
       </nav>
@@ -173,7 +212,7 @@ export default function Navbar() {
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(13,17,23,0.98)",
+          background: "var(--color-bg)",
           zIndex: 999,
           display: "flex",
           flexDirection: "column",

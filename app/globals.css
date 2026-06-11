@@ -12,6 +12,7 @@
   --color-bg-alt: #f5f6f8;             /* Slightly different section bg */
   --color-surface: #ffffff;             /* Card / navbar surfaces */
   --color-hero-start: #0d1117;          /* Hero gradient dark start */
+  --color-navbar-bg: rgba(255, 255, 255, 0.97);
   --color-hero-end: #1a2332;            /* Hero gradient dark end */
 
   /* Brand Colors */
@@ -56,6 +57,17 @@
   --container-max: 1200px;
   --container-px: 1.5rem;
   --section-py: 5rem;
+}
+
+[data-theme='dark'] {
+  --color-bg: #0d1117;
+  --color-bg-alt: #161b22;
+  --color-surface: #161b22;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-border: #30363d;
+  --color-border-card: #30363d;
+  --color-navbar-bg: rgba(13, 17, 23, 0.97);
 }
 
 /* ── Reset ── */
@@ -105,7 +117,7 @@ a {
   inset-block-start: 0;
   inset-inline: 0;
   height: 64px;
-  background: rgba(255, 255, 255, 0.97);
+  background: var(--color-navbar-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
@@ -219,6 +231,27 @@ a {
   max-width: 800px;
   padding-inline: var(--container-px);
 }
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-text-appear {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.hero-title.hero-text-appear { animation-delay: 0.3s; }
+.hero-title-gradient.hero-text-appear { animation-delay: 0.9s; }
+.hero-subtitle-role.hero-text-appear { animation-delay: 1.5s; }
 
 /* Profile image */
 .hero-img {
