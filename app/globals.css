@@ -244,6 +244,18 @@ a {
   }
 }
 
+@keyframes photoGlow {
+  0% {
+    box-shadow: 0 0 0 6px rgba(255, 107, 0, 0.15), 0 0 20px rgba(255, 107, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 107, 0, 0.25), 0 0 45px rgba(255, 107, 0, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 6px rgba(255, 107, 0, 0.15), 0 0 20px rgba(255, 107, 0, 0.3);
+  }
+}
+
 .hero-text-appear {
   opacity: 0;
   animation: fadeInUp 0.8s ease-out forwards;
@@ -264,7 +276,7 @@ a {
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 0 0 6px rgba(255, 107, 0, 0.15), var(--shadow-card);
+  animation: photoGlow 4s ease-in-out infinite;
   transition: var(--transition);
 }
 .hero-img:hover {
