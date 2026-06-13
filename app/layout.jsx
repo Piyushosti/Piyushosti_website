@@ -4,6 +4,9 @@ import Navbar from "../components/Navbar";
 export const metadata = {
   title: "Piyush Osti | AWS Cloud Engineer",
   description: "Professional AWS Cloud Engineer portfolio",
+  icons: {
+    icon: "/Piyush-osti-Cloud Engineer-photo.jpg",
+  },
 };
 
 export default function RootLayout({ children }) {
